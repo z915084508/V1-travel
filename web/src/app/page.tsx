@@ -1,69 +1,29 @@
+"use client";
 import Image from "next/image";
-
-export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+import { useState } from "react";
+import Link from "next/link";
+import BrandLogo from "../components/BrandLogo";
+import {useChat} from "../components/ChatProvider";
+const content = {
+ en: { nav:["Explore","Plan","Stories","About"],title:"Travel should feel easier.",intro:"Thoughtful journeys. Human support.",body:"From the first conversation to the journey home. We help you find what feels right for you.",plan:"Plan your trip",talk:"Talk to an advisor",trips:"My trips",discover:"A little further. A little closer.",china:"Beyond the journey.",chinaBody:"Ancient paths. New perspectives. A China that stays with you.",spain:"Find your own rhythm.",spainBody:"Long lunches, sunlit streets, and a little room to get lost.",exploreChina:"Explore China",exploreSpain:"Discover Spain",help:"How can we help?",services:["Flights","Stays","Rail & transfers","Insurance","Bespoke journeys"],descriptions:["More than the lowest fare. The right way to get there.","The right neighbourhood. The details that make a difference.","From one place to the next, with a little less to think about.","Understand your options before choosing your cover.","A journey shaped around you, from the very beginning."],why:["We compare.","We explain.","We stay.","We solve."],whyBody:"Because a journey is more than a booking.",story:"The art of taking your time.",storyBody:"Leave room for the unexpected. The best part of a journey is sometimes the part you didn’t plan.",read:"Read the story",storyMore:"On your next journey, keep one afternoon unplanned. Walk a little. Find a small café. Let a city introduce itself at its own pace.",chatTitle:"Where shall we begin?",chatBody:"Tell us a little about the journey you have in mind.",demo:"Interactive preview · Messages are not sent to an advisor.",placeholder:"Your message…",send:"Send message",response:"Your message is shown in this preview only. Live advisor messaging will be connected in the next stage.",close:"Close",menu:"Menu"},
+ zh: { nav:["探索","规划","旅行故事","关于我们"],title:"旅行，本该更简单。",intro:"用心规划。有人相伴。",body:"从一次咨询，到一段完整旅程。我们和你一起找到真正适合的选择。",plan:"规划你的旅程",talk:"与顾问聊聊",trips:"我的旅程",discover:"走向远方，也更靠近自己。",china:"中国，不只是目的地。",chinaBody:"古老的道路，全新的视角。遇见一个值得慢慢了解的中国。",spain:"找到自己的旅行节奏。",spainBody:"悠长的午餐，洒满阳光的街道，还有一点随心而行的余地。",exploreChina:"探索中国",exploreSpain:"发现西班牙",help:"我们能为你做些什么？",services:["机票","住宿","铁路与接送","旅行保险","定制旅程"],descriptions:["找到的不只是最低价格，而是更适合你的选择。","从位置到入住条件，帮你把重要的细节看清楚。","从一站到下一站，让衔接更从容。","看清保障和条款，再作出适合自己的选择。","从最初的想法出发，规划属于你的旅程。"],why:["我们比较。","我们解释。","我们陪伴。","我们解决。"],whyBody:"因为一段旅程，远不止一次预订。",story:"慢下来，也是一种旅行。",storyBody:"给意外的相遇留一点空间。旅行中最好的部分，有时恰好不在计划之中。",read:"阅读故事",storyMore:"在下一次旅程里，留一个没有行程的下午。沿街走走，找一家小店坐下，让一座城市用自己的节奏与你相遇。",chatTitle:"从哪里开始？",chatBody:"和我们聊聊你心中的旅程。",demo:"交互预览 · 消息不会发送给真实顾问。",placeholder:"输入你的想法…",send:"发送消息",response:"消息仅在本次预览中展示。真实顾问服务将在后续接入。",close:"关闭",menu:"菜单"},
+ es: { nav:["Explora","Planea","Historias","Nosotros"],title:"Viajar debería ser más fácil.",intro:"Viajes con sentido. Apoyo cercano.",body:"Desde la primera conversación hasta el final del viaje. Contigo para encontrar lo que realmente encaja.",plan:"Planea tu viaje",talk:"Habla con un asesor",trips:"Mis viajes",discover:"Un poco más lejos. Un poco más cerca.",china:"Más allá del viaje.",chinaBody:"Caminos antiguos. Nuevas perspectivas. Una China que se queda contigo.",spain:"Encuentra tu propio ritmo.",spainBody:"Sobremesas, calles al sol y un poco de espacio para perderse.",exploreChina:"Explora China",exploreSpain:"Descubre España",help:"¿Cómo podemos ayudarte?",services:["Vuelos","Alojamiento","Trenes y traslados","Seguros","Viajes a medida"],descriptions:["Más que la tarifa más baja. La mejor forma de llegar.","El barrio adecuado y los detalles que importan.","De un lugar a otro, con menos preocupaciones.","Entiende tus opciones antes de elegir tu cobertura.","Un viaje pensado para ti desde el principio."],why:["Comparamos.","Explicamos.","Acompañamos.","Resolvemos."],whyBody:"Porque un viaje es más que una reserva.",story:"El arte de tomarse su tiempo.",storyBody:"Deja espacio para lo inesperado. A veces, lo mejor del viaje no estaba en el plan.",read:"Lee la historia",storyMore:"En tu próximo viaje, reserva una tarde sin planes. Camina, busca una pequeña cafetería y deja que la ciudad se presente a su propio ritmo.",chatTitle:"¿Por dónde empezamos?",chatBody:"Cuéntanos el viaje que tienes en mente.",demo:"Vista previa · Los mensajes no se envían a un asesor.",placeholder:"Tu mensaje…",send:"Enviar mensaje",response:"Este mensaje solo aparece en la vista previa. El servicio de asesoría se conectará más adelante.",close:"Cerrar",menu:"Menú"}
+};
+type Locale=keyof typeof content;
+export default function Home(){
+ const [locale,setLocale]=useState<Locale>("zh"),[menu,setMenu]=useState(false),[storyOpen,setStoryOpen]=useState(false);
+ const {openChat,setChatLocale}=useChat(),c=content[locale];
+ const languages=<div className="languages" aria-label="Language">{(["zh","es","en"] as Locale[]).map(l=><button key={l} aria-pressed={locale===l} onClick={()=>{setLocale(l);setChatLocale(l);document.documentElement.lang=l==="zh"?"zh-CN":l;}}>{l==="zh"?"中文":l.toUpperCase()}</button>)}</div>;
+ return <>
+ <a className="skip" href="#main">Skip to content</a>
+ <header className="header"><BrandLogo/><nav className="desktop-nav" aria-label="Main navigation">{c.nav.map((n,i)=><a key={n} href={["#explore","#services","#stories","#about"][i]}>{n}</a>)}</nav><div className="header-tools">{languages}<button className="my-trips" onClick={()=>openChat(c.trips)}>{c.trips} ↗</button></div><button className="menu-toggle" aria-expanded={menu} aria-controls="mobile-menu" onClick={()=>setMenu(!menu)}>{menu?c.close:c.menu} {menu?"−":"+"}</button></header>
+ {menu&&<nav id="mobile-menu" className="mobile-menu" aria-label="Mobile navigation">{c.nav.map((n,i)=><a key={n} href={["#explore","#services","#stories","#about"][i]} onClick={()=>setMenu(false)}>{n} ↗</a>)}{languages}<button onClick={()=>{setMenu(false);openChat(c.trips);}}>{c.trips} ↗</button></nav>}
+ <main id="main"><section className="hero shell"><div className="hero-copy"><p className="eyebrow">A WORLD TO DISCOVER. A HUMAN TO HELP.</p><h1>{c.title}</h1><div className="hero-description"><p className="intro">{c.intro}</p><p>{c.body}</p></div><div className="hero-actions"><button className="button" onClick={()=>openChat(c.plan)}>{c.plan}<span>↗</span></button><button className="text-link" onClick={()=>openChat()}>{c.talk}<span>↗</span></button></div></div><figure className="hero-photo"><Image src="/images/china.jpg" alt="The Great Wall winding through autumn mountains in China" fill loading="eager" sizes="(max-width:760px) 100vw,56vw"/><div className="photo-caption"><span>CHINA, THROUGH A DIFFERENT LENS</span><span>40°25′ N 116°34′ E</span></div><span className="photo-mark">Go somewhere.<br/><em>Feel something.</em></span></figure><div className="hero-foot"><span>01 / V1 TRAVEL</span><span>CHINA · SPAIN · EVERYWHERE BETWEEN</span><a href="#explore">SCROLL TO EXPLORE ↓</a></div></section>
+ <section className="explore shell" id="explore"><div className="section-top"><p className="eyebrow">02 / EXPLORE</p><p>{c.discover}</p></div><div className="destination-heading"><h2>CHINA<span>中国</span></h2><div><h3>{c.china}</h3><p>{c.chinaBody}</p></div></div><button className="china-poster" onClick={()=>openChat(c.exploreChina)} aria-label={c.exploreChina}><Image src="/images/china.jpg" alt="Autumn mountains and the historic Great Wall" fill sizes="90vw"/><span className="poster-type">A different<br/><em>kind of wonder.</em></span><span className="poster-bottom"><span>BEIJING · SHANGHAI · CHENGDU · GUANGZHOU</span><span className="round-arrow">↗</span></span></button><div className="destination-footer"><span>OLD SOUL. NEW PERSPECTIVES.</span><button className="text-link" onClick={()=>openChat(c.exploreChina)}>{c.exploreChina} ↗</button></div><div className="spain-block"><figure><Image src="/images/spain.jpg" alt="Historic architecture and warm evening light in Madrid, Spain" fill sizes="(max-width:760px) 90vw,50vw"/></figure><div className="spain-copy"><p className="eyebrow">A DIFFERENT PACE / ESPAÑA</p><h2>Hola,<br/><em>España.</em></h2><h3>{c.spain}</h3><p>{c.spainBody}</p><button className="text-link" onClick={()=>openChat(c.exploreSpain)}>{c.exploreSpain} ↗</button></div></div></section>
+ <section className="services shell" id="services"><div><p className="eyebrow">03 / WHAT WE DO</p><h2>{c.help}</h2><span className="asterisk" aria-hidden="true">✳</span></div><div className="service-list">{c.services.map((name,i)=><button key={name} onClick={()=>openChat(name)}><span className="service-number">0{i+1}</span><span><strong>{name}</strong><span className="service-description">{c.descriptions[i]}</span></span><span className="service-arrow">↗</span></button>)}</div></section>
+ <section className="manifesto shell" id="why-v1"><p className="eyebrow">04 / WHY V1</p><div className="manifesto-body">{c.why.map((line,i)=><p key={line}><span>0{i+1}</span>{line}</p>)}<div className="manifesto-foot"><p>{c.whyBody}</p><button className="text-link" onClick={()=>openChat()}>{c.talk} ↗</button></div></div></section>
+ <section className="our-story shell" id="about"><p className="eyebrow">05 / OUR STORY</p><div className="our-story-grid"><h2>{locale==="zh"?"预订越来越容易。\n旅行，也该更轻松。":locale==="es"?"Reservar es más fácil.\nViajar también debería serlo.":"Booking got easier.\nTravel should, too."}</h2><div><p>{locale==="zh"?"选择更多了，疑问却没有变少。V1 相信，好的旅行服务，是从你的角度出发，把复杂的选择解释清楚，也在需要的时候真正出现。":locale==="es"?"Más opciones no siempre significan menos dudas. En V1 miramos el viaje desde tu lado: comparamos, explicamos y estamos cuando hace falta.":"More options do not always mean fewer questions. At V1, we see the journey from your side: comparing carefully, explaining clearly, and being there when it matters."}</p><p>{locale==="zh"?"从第一次对话，到旅程结束。有人倾听，也有人帮你一起解决。":locale==="es"?"Desde la primera conversación hasta el final del viaje. Alguien que escucha y ayuda.":"From the first conversation to the journey home. Someone to listen. Someone to help."}</p><Link className="text-link" href={`/story?lang=${locale}`}>{locale==="zh"?"了解我们的故事":locale==="es"?"Nuestra historia":"Read our story"} ↗</Link></div></div><p className="story-signature">TRAVEL SHOULD FEEL EASIER.</p></section>
+ <section className="stories shell" id="stories"><p className="eyebrow">06 / NOTES FROM THE JOURNEY</p><div className="story-row"><h2>{c.story}</h2><div><p>{c.storyBody}</p><button className="text-link" aria-expanded={storyOpen} onClick={()=>setStoryOpen(!storyOpen)}>{c.read} {storyOpen?"−":"↗"}</button>{storyOpen&&<p className="story-expanded">{c.storyMore}</p>}</div></div></section></main>
+ <footer className="footer shell"><BrandLogo/><nav aria-label="Footer">{c.nav.map((n,i)=><a key={n} href={["#explore","#services","#stories","#about"][i]}>{n}</a>)}<button onClick={()=>openChat()}>TALK TO V1 ↗</button></nav><p>THOUGHTFUL JOURNEYS. HUMAN SUPPORT.</p><span>© 2026 V1 TRAVEL</span></footer>
+ </>;
 }

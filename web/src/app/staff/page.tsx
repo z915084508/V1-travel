@@ -1,6 +1,9 @@
 import BrandLogo from "../../components/BrandLogo";
 import Link from "next/link";
+import type {Metadata} from "next";
 import {conversations,liveTrips,quotes,staffOverview,statusLabel,travelCases,type StaffLocale} from "../../lib/v1-data";
+
+export const metadata:Metadata={robots:{index:false,follow:false,nocache:true}};
 
 const copy={
  zh:{

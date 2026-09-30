@@ -1,6 +1,9 @@
 import BrandLogo from "../../../components/BrandLogo";
 import Link from "next/link";
+import type {Metadata} from "next";
 import {permissionLabel,roleLabel,rolePermissions,staffAccounts,type StaffLocale,type StaffRole} from "../../../lib/v1-data";
+
+export const metadata:Metadata={robots:{index:false,follow:false,nocache:true}};
 
 const roles=Object.keys(rolePermissions) as StaffRole[];
 

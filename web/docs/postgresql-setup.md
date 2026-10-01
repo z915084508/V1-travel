@@ -45,6 +45,17 @@ The bootstrap refuses to run if an active administrator already exists.
 Existing customer accounts cannot be silently promoted by this script.
 
 Sign in at `/staff/login`, then open `/admin/staff`.
+For a Docker deployment, the production image includes the initialization scripts.
+From the VPS project web directory, run:
+
+```sh
+docker compose exec web node scripts/bootstrap-admin.mjs --email owner@example.com --name "V1 Owner"
+```
+
+Enter the password at the hidden prompt. This reuses the container's injected
+`DATABASE_URL` without printing it or placing the password in command arguments.
+The container reaches PostgreSQL through the internal Compose hostname.
+
 Create an invitation and privately share its link with the employee.
 Invitations expire after 48 hours and can be accepted once. Re-generating a
 pending invitation for the same email invalidates the previous link.

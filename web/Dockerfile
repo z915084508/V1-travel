@@ -30,6 +30,10 @@ RUN groupadd --system --gid 1001 nodejs \
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
+COPY --from=builder --chown=nextjs:nodejs /app/docs/auth-migration.sql ./docs/auth-migration.sql
+COPY --from=builder --chown=nextjs:nodejs /app/src/lib/auth/crypto.ts ./src/lib/auth/crypto.ts
+COPY --from=builder --chown=nextjs:nodejs /app/src/lib/auth/policy.ts ./src/lib/auth/policy.ts
 
 USER nextjs
 

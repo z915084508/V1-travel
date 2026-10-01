@@ -1,0 +1,8 @@
+v1travel.es {
+	encode zstd gzip
+	reverse_proxy web:3000
+}
+
+www.v1travel.es {
+	redir https://v1travel.es{uri} permanent
+}

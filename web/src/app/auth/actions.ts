@@ -33,7 +33,7 @@ export async function register(_previous: AuthState, data: FormData): Promise<Au
   } catch { return { code: "unavailable" }; }
   redirect("/account");
 }
-export async function signIn(kind: "customer" | "staff", _previous: AuthState, data: FormData): Promise<AuthState> {
+async function signIn(kind: "customer" | "staff", data: FormData): Promise<AuthState> {
   const email = normalizeEmail(field(data, "email"));
   const password = field(data, "password");
   if (!validEmail(email) || password.length === 0 || password.length > 128) return { code: "credentials" };
@@ -50,6 +50,12 @@ export async function signIn(kind: "customer" | "staff", _previous: AuthState, d
     await database().query("UPDATE v1_auth.accounts SET last_sign_in_at=now() WHERE id=$1", [account.id]);
   } catch { return { code: "unavailable" }; }
   redirect(kind === "staff" ? `/staff?lang=${locale}` : "/account");
+}
+export async function customerSignIn(_previous: AuthState, data: FormData): Promise<AuthState> {
+  return signIn("customer", data);
+}
+export async function staffSignIn(_previous: AuthState, data: FormData): Promise<AuthState> {
+  return signIn("staff", data);
 }
 export async function acceptInvitation(_previous: AuthState, data: FormData): Promise<AuthState> {
   const token = field(data, "token");

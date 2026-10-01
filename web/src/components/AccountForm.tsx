@@ -1,7 +1,7 @@
 "use client";
 import { useActionState } from "react";
 import Link from "next/link";
-import { register, signIn, acceptInvitation, type AuthState } from "../app/auth/actions";
+import { register, customerSignIn, staffSignIn, acceptInvitation, type AuthState } from "../app/auth/actions";
 
 const copy = {
   zh: { name: "姓名", email: "邮箱", phone: "电话 / WhatsApp / 微信（可选）", password: "密码", confirm: "再次输入密码", language: "偏好语言", signup: "创建账户", login: "登录", accept: "设置密码并启用账户", pending: "正在处理…", register: "创建账户", signIn: "已有账户？登录", passwordHint: "请使用 10–128 个字符。", activated: "账户已启用，请使用新密码登录。", errors: { invalid: "请检查姓名、邮箱和密码，密码至少需要 10 个字符。", unavailable: "账户服务暂时无法使用，请稍后重试。", credentials: "邮箱或密码不正确，或该账户无法登录此入口。", exists: "无法创建此账户。如已注册，请使用登录入口。", rate: "尝试次数较多，请 15 分钟后再试。", invitation: "邀请无效、已使用或已过期，请联系管理员。", password: "请设置至少 10 个字符的密码，并确认两次输入一致。" } },
@@ -10,7 +10,7 @@ const copy = {
 };
 type Props = { mode: "register" | "login" | "staff" | "accept"; locale?: "zh" | "es" | "en"; token?: string; activated?: boolean; configured: boolean };
 export default function AccountForm({ mode, locale = "zh", token, activated, configured }: Props) {
-  const action = mode === "register" ? register : mode === "accept" ? acceptInvitation : signIn.bind(null, mode === "staff" ? "staff" : "customer");
+  const action = mode === "register" ? register : mode === "accept" ? acceptInvitation : mode === "staff" ? staffSignIn : customerSignIn;
   const [state, submit, pending] = useActionState<AuthState, FormData>(action, {});
   const c = copy[locale];
   const isNew = mode === "register" || mode === "accept";

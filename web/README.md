@@ -35,12 +35,15 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-## Staff access
+## Accounts and staff access
 
-The `/staff` and `/admin/*` routes are protected by HTTP Basic Auth in production.
-Set these Vercel environment variables before deploying a public preview:
+V1 uses its own PostgreSQL database for customer registration, staff invitations,
+password login and database sessions. Setup, environment variables and first-admin
+creation are documented in [PostgreSQL setup](docs/postgresql-setup.md).
 
-- `STAFF_BASIC_AUTH_USER`
-- `STAFF_BASIC_AUTH_PASSWORD`
+The staff login is `/staff/login`. Only active staff can access `/staff`;
+only active administrators can access `/admin/staff`. Missing database
+configuration locks staff access. HTTP Basic Auth is no longer used.
 
-If either value is missing in production, staff access is locked with a 503 response.
+Use Node.js 22+. Run `npm test`, `npm run lint` and `npm run build`
+before pushing changes.

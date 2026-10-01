@@ -2,6 +2,9 @@ import BrandLogo from "../../components/BrandLogo";
 import Link from "next/link";
 import type {Metadata} from "next";
 import {conversations,liveTrips,quotes,staffOverview,statusLabel,travelCases,type StaffLocale} from "../../lib/v1-data";
+import {requireStaff} from "../../lib/auth/session";
+import {canManageStaff} from "../../lib/auth/policy";
+import {signOut} from "../auth/actions";
 
 export const metadata:Metadata={robots:{index:false,follow:false,nocache:true}};
 
@@ -45,6 +48,7 @@ const copy={
 export default async function StaffDashboard({searchParams}:{searchParams:Promise<{lang?:string}>}){
  const params=await searchParams;
  const locale:StaffLocale=params.lang==="es"?"es":"zh";
+ const account=await requireStaff(false,locale);
  const c=copy[locale];
  const other=locale==="zh"?"es":"zh";
  return <main className="staff-page">
@@ -52,7 +56,7 @@ export default async function StaffDashboard({searchParams}:{searchParams:Promis
    <BrandLogo/>
    <nav aria-label="Staff navigation">
     {(c.nav as string[]).slice(0,6).map((item,index)=><a key={item} href={["#dashboard","#inbox","#cases","#quotes","#orders","#live-trips"][index]} aria-current={index===0?"page":undefined}>{item}</a>)}
-    <Link href={`/admin/staff?lang=${locale}`}>{(c.nav as string[])[6]}</Link>
+    {canManageStaff(account)&&<Link href={`/admin/staff?lang=${locale}`}>{(c.nav as string[])[6]}</Link>}
    </nav>
   </aside>
   <section className="staff-main" id="dashboard">
@@ -61,9 +65,10 @@ export default async function StaffDashboard({searchParams}:{searchParams:Promis
      <p className="eyebrow">{c.eyebrow as string}</p>
      <h1>{c.title as string}</h1>
     </div>
-    <div className="staff-actions"><Link className="text-link" href={`/staff?lang=${other}`}>{c.langOther as string}</Link><Link className="text-link" href="/">{c.home as string} ↗</Link></div>
+    <div className="staff-actions"><span>{account.full_name}</span><Link className="text-link" href={`/staff?lang=${other}`}>{c.langOther as string}</Link><Link className="text-link" href="/">{c.home as string} ↗</Link><form action={signOut}><button className="text-link" type="submit">{locale==="zh"?"退出登录":"Cerrar sesión"}</button></form></div>
    </header>
 
+   <p className="staff-demo-note">{locale==="zh"?"以下运营数据为演示数据；员工账户与权限由数据库管理。":"Los datos operativos siguientes son de ejemplo. Las cuentas y permisos staff se gestionan en la base de datos."}</p>
    <section className="staff-stats" aria-label="Staff overview">
     {(c.stats as (string|number)[][]).map(([label,value,caption])=><article key={label}>
      <span>{label}</span>

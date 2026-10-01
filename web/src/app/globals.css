@@ -22,3 +22,17 @@
 @media(max-width:1280px){.header-tools{gap:14px}.account-actions{gap:10px;font-size:9px}.desktop-nav{gap:22px}}
 @media(max-width:1100px){.account-actions{display:none}}
 @media(max-width:760px){.mobile-menu .staff-entry{color:#607786}.compact-auth{grid-template-columns:1fr}}
+/* Account and staff management states */
+.button:disabled{opacity:.55;cursor:not-allowed}
+.auth-form>div input{width:100%;box-sizing:border-box}
+.form-feedback{line-height:1.7;color:var(--blue)!important;background:#eef2f5;padding:12px 14px;overflow-wrap:anywhere}
+.invite-result{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;overflow-wrap:anywhere}
+.staff-demo-note{font-size:13px;line-height:1.7;margin-bottom:22px;color:#607786}
+.staff-accounts-list article{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,1fr);gap:24px;align-items:center;border-bottom:1px solid var(--mist);padding:22px 0}
+.staff-accounts-list p,.staff-accounts-list small{font-size:13px;line-height:1.7;color:#607786;overflow-wrap:anywhere}
+.staff-account-controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.staff-account-controls select,.staff-account-controls button{border:1px solid var(--mist);padding:10px;background:var(--white);color:var(--blue);font:inherit;font-size:13px;max-width:100%}
+.staff-account-controls button:disabled{opacity:.5;cursor:not-allowed}
+.staff-account-controls .form-feedback{width:100%;font-size:12px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:760px){.staff-accounts-list article{grid-template-columns:1fr}.staff-actions{flex-wrap:wrap}.auth-header{gap:20px;flex-wrap:wrap}.auth-form,.admin-form{min-width:0}.auth-grid{gap:32px}}

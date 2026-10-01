@@ -6,7 +6,7 @@ export default function robots():MetadataRoute.Robots{
    {
     userAgent:"*",
     allow:"/",
-    disallow:["/staff","/staff/","/admin","/admin/"],
+    disallow:["/staff","/staff/","/admin","/admin/","/account","/api/account","/access-denied"],
    },
   ],
  };
